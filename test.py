@@ -55,9 +55,9 @@ def get_all_tweets(query_word, lim=20, langs=["es", "en"]):
 	n_images = 0
 	tweets = []
 	for c, tweet in enumerate(tweepy.Cursor(api.search,
-										    q=query_word,
-										    result_type="recent",
-										    include_entities=True).items()):
+																					q=query_word,
+																					result_type="recent",
+																					include_entities=True).items()):
 
 		if n_images == lim:		
 			print("\n"+str(c)+str(" tweets viewed"))
