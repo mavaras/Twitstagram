@@ -1,0 +1,77 @@
+<html>
+  <head>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.7/semantic.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.7/semantic.min.css" rel="stylesheet"/>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.js"></script>
+	<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.js"></script>
+	
+	<title>Twinstagram</title>
+  </head>
+  <body>
+	<div style="background-color:#f8f9fa"><br><br>
+	<div style="display:block;text-align:center;width:80%;margin:0 auto;">
+		<h1>Twitstagram</h1><br>
+		<form id="form" class="ui left icon action input" method="POST" action="/">
+		  <i class="search icon"></i>
+		  <input type="text" name="query_word" placeholder="word to search for"/>
+		  <button class="ui button" type="submit" value="Go" onclick="document.getElementById('form').className+=' loading'">Go</button>
+		</form><br>
+	</div>
+
+	<br><div class="ui section divider" style="margin:0 auto;width:50%"></div>
+	</div><br><br>
+	
+	{% if query_word %}
+	<div style="width:70%;margin:0 auto;">Search for: <h2>{{query_word}}</h2><br></div>
+	{% endif %}
+	
+	<div id="imgs_grid" class="ui three special cards link centered grid" style="width:70%;margin:0 auto">
+	
+	{% for tweet in tweets %}
+		<div class="grid-item ui card" style="margin-left:-2px">
+		  <div class="blurring dimmable image">
+		  <div class="ui dimmer">
+			<div class="content">
+			  <div class="center">
+				<div class="ui inverted small button" style="margin-bottom:30"><a style="color:#1DA1F2" href="{{tweet.url}}" target="blank">Go to tweet &nbsp;<i class="twitter icon"></i></a></div>
+				<!--<div class="ui inverted small button" style="color:red"><button onclick="download_photo('{{tweet.image_url}}')">Download photo &nbsp;<i class="download icon"></i></button></div>-->
+				<a href="/download_photo/{{tweet.tid}}" style="color:red"><div class="ui inverted small button" style="color:red">Download photo &nbsp;<i class="download icon"></i></div></a>
+			  </div>
+			</div>
+		  </div>
+		  <img src="{{tweet.image_url}}">
+		</div>
+		</div>
+	{% endfor %}
+	</div>
+
+	<script>
+	  $("#imgs_grid").imagesLoaded(function() {
+		$("#imgs_grid").masonry({itemSelector: ".grid-item"});
+	  });
+	  
+	  $('.special.cards .image').dimmer({
+		on: 'hover'
+	  });
+
+	  function download_photo(img_url) {console.log(img_url);
+	    $.ajax({
+			url: "/download_photo",
+			type: "POST",
+			contentType: "application/json",
+	        dataType: "json",
+			data: JSON.stringify(img_url),
+			success: function(data) {
+	          console.log("!");
+			}
+		});
+	  }
+	</script>
+  </body>
+</html>
