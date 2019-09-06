@@ -13,7 +13,6 @@ from flask import Flask, render_template, request, url_for, send_file, after_thi
 app = Flask(__name__)
 
 
-
 class Tweet:
     def __init__(self, tid, url, image_url, user_name):
         self.tid = tid
@@ -55,9 +54,9 @@ def get_all_tweets(query_word, lim=20, langs=["es", "en"]):
     n_images = 0
     tweets = []
     for c, tweet in enumerate(tweepy.Cursor(api.search,
-                                                                                    q=query_word,
-                                                                                    result_type="recent",
-                                                                                    include_entities=True).items()):
+                                            q=query_word,
+                                            result_type="recent",
+                                            include_entities=True).items()):
 
         if n_images == lim:     
             print("\n"+str(c)+str(" tweets viewed"))
